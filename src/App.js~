@@ -28,6 +28,7 @@ class App extends React.Component {
     }
 
   render() {
+    let content = "Formula for success: under promise and over deliver.";
     return (
       <div className="App" style={{background: this.state.color, color: this.state.color}}>
         <header className="App-header">
