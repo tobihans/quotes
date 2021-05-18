@@ -12,6 +12,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.renewQuote = this.renewQuote.bind(this);
+    this.tweetUrl = "https://twitter.com/intent/tweet";
     this.state = {
       quote: undefined,
       color: randomColor(),
@@ -29,27 +30,46 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App" style={{background: this.state.color, color: this.state.color}}>
+      <div className="App"
+        style={ 
+          this.state.quote !== undefined 
+          ? {background: this.state.color, color: this.state.color}
+          : {}
+        }
+      >
         <header className="App-header">
-
         </header>
         <div id="quote-box">
           <div id="text">
             <FontAwesomeIcon icon={['fas', 'quote-left']}/>
-            {` ${this.state.quote !== undefined ? this.state.quote.content : ''} `}
-            <FontAwesomeIcon icon={['fas', 'quote-right']}/>
+            &nbsp;
+            {`  ${this.state.quote !== undefined ? this.state.quote.content : ''}  `}
+            {/* <FontAwesomeIcon icon={['fas', 'quote-right']}/> */}
           </div>
           <div id="author">
             {`- ${this.state.quote !== undefined ? this.state.quote.author : ''} `}
           </div>
           <div id="controls">
             <a id="tweet-quote" target="_blank" rel="noreferrer"
-              href="https://twitter.com/intent/tweet"
-              style={{ background: this.state.color }}
+              href={
+                this.state.quote !== undefined
+                ? `${this.tweetUrl}?hashtags=quote&text="${this.state.quote.content}"${this.state.quote.author}`
+                : '#'
+              }
+              style={
+                this.state.quote !== undefined 
+                ? { background: this.state.color }
+                : {}
+              }
             >
               <FontAwesomeIcon icon={['fab', 'twitter']}/>
             </a>
-            <button id="new-quote" style={{ background: this.state.color }}
+            <button id="new-quote" 
+              style={
+                this.state.quote !== undefined 
+                ? { background: this.state.color }
+                : {}
+              }
               onClick={this.renewQuote}
             >
               New quote
@@ -61,6 +81,9 @@ class App extends React.Component {
   }
   
   componentDidMount() {
+    let script = document.createElement("script");
+    script.src = "https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js";
+    document.body.appendChild(script);
     this.renewQuote();
   }
 }
